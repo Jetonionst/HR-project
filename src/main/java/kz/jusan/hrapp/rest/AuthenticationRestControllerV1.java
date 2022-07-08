@@ -2,6 +2,7 @@ package kz.jusan.hrapp.rest;
 
 import kz.jusan.hrapp.dto.AuthenticationRequestDto;
 import kz.jusan.hrapp.model.User;
+import kz.jusan.hrapp.repository.UserRepository;
 import kz.jusan.hrapp.security.jwt.JwtTokenProvider;
 import kz.jusan.hrapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,14 @@ public class AuthenticationRestControllerV1 {
 
     private final UserService userService;
 
+    private  final UserRepository userRepository;
+
     @Autowired
-    public AuthenticationRestControllerV1(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
+    public AuthenticationRestControllerV1(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("login")
@@ -48,7 +52,7 @@ public class AuthenticationRestControllerV1 {
         try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
-            User user = userService.findByUsername(username);
+            User user = userRepository.findByUsername(username);;
 
             if (user == null) {
                 throw new UsernameNotFoundException("User with username: " + username + " not found");

@@ -1,6 +1,7 @@
 package kz.jusan.hrapp.security;
 
 import kz.jusan.hrapp.model.User;
+import kz.jusan.hrapp.repository.UserRepository;
 import kz.jusan.hrapp.security.jwt.JwtUserFactory;
 import kz.jusan.hrapp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,16 +23,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class JwtUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public JwtUserDetailsService(UserService userService) {
-        this.userService = userService;
+    public JwtUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findByUsername(username);
+        User user = userRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException("User with username: " + username + " not found");

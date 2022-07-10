@@ -46,11 +46,11 @@ public class AuthenticationRestControllerV1 {
 
     @CrossOrigin("*")
     @PostMapping("login")
-    public ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
+    public Map<String, String> login(@RequestBody AuthenticationRequestDto requestDto) {
         try {
             String username = requestDto.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
-            User user = userRepository.findByUsername(username);;
+            User user = userRepository.findByUsername(username);
 
             if (user == null) {
                 throw new UsernameNotFoundException("User with username: " + username + " not found");
@@ -58,11 +58,11 @@ public class AuthenticationRestControllerV1 {
 
             String token = jwtTokenProvider.createToken(username, user.getRoles());
 
-            Map<Object, Object> response = new HashMap<>();
+            Map<String, String> response = new HashMap<>();
             response.put("username", username);
             response.put("token", token);
 
-            return ResponseEntity.ok(response);
+            return response;
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
         }

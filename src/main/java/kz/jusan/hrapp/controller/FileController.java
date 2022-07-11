@@ -4,30 +4,27 @@ package kz.jusan.hrapp.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kz.jusan.hrapp.message.ResponseFile;
 import kz.jusan.hrapp.message.ResponseMessage;
 import kz.jusan.hrapp.model.FileDB;
-import kz.jusan.hrapp.service.FileStorageService;
+import kz.jusan.hrapp.service.impl.FileStorageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Slf4j
-@Controller
+@Tag(name = "Files")
+@RestController
 @CrossOrigin("http://localhost:8081")
 public class FileController {
 
     @Autowired
-    private FileStorageService storageService;
+    private FileStorageServiceImpl storageService;
 
     @PostMapping("/upload")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {

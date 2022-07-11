@@ -1,8 +1,7 @@
-package kz.jusan.hrapp.service;
+package kz.jusan.hrapp.service.impl;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Stream;
 
 import kz.jusan.hrapp.model.FileDB;
 import kz.jusan.hrapp.repository.FileDBRepository;
@@ -12,12 +11,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class FileStorageService {
+public class FileStorageServiceImpl {
 
     @Autowired
     private FileDBRepository fileDBRepository;
 
-    public FileStorageService(FileDBRepository fileDBRepository) {
+    public FileStorageServiceImpl(FileDBRepository fileDBRepository) {
         this.fileDBRepository = fileDBRepository;
     }
 
@@ -36,7 +35,4 @@ public class FileStorageService {
         return fileDBRepository.findAll();
     }
 
-//    //public Stream<FileDB> getAllFiles() {
-//        return fileDBRepository.findAll().stream();
-//    }
 }

@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(LOGIN_ENDPOINT,  "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "/upload", "/files", "/files/**").permitAll()
+                .antMatchers(LOGIN_ENDPOINT,  "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "/upload", "/files", "/files/**", "/upload/photo/**", "/photos/**", "/photos").permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

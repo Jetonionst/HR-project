@@ -8,6 +8,7 @@ import kz.jusan.hrapp.message.ResponseFile;
 import kz.jusan.hrapp.message.ResponseMessage;
 import kz.jusan.hrapp.model.FileDB;
 import kz.jusan.hrapp.service.FileStorageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+@Slf4j
 @Controller
 @CrossOrigin("http://localhost:8081")
 public class FileController {
@@ -42,8 +44,11 @@ public class FileController {
     }
 
     @GetMapping("/files")
-    public ResponseEntity<List<ResponseFile>> getListFiles() {
-        List<ResponseFile> files = storageService.getAllFiles().map(dbFile -> {
+    public ResponseEntity<List<FileDB>> getListFiles() {
+        List<FileDB> files = storageService.getAllFiles();
+        log.debug(files.toString() + " - files");
+        files.stream()
+                .map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
                     .path("/files/")
@@ -59,6 +64,7 @@ public class FileController {
 
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
+
 
     @GetMapping("/files/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable String id) {
